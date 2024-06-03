@@ -1,4 +1,4 @@
-package com.tbemerencio.products.config.mongodb.aws;
+package com.tbemerencio.products.config.aws;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
