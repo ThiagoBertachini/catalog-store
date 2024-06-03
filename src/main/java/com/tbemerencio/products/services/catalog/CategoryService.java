@@ -4,6 +4,8 @@ import com.tbemerencio.products.domain.category.Category;
 import com.tbemerencio.products.domain.category.CategoryDTO;
 import com.tbemerencio.products.domain.category.exceptions.CategoryNotFoundException;
 import com.tbemerencio.products.repositories.CategoryRepository;
+import com.tbemerencio.products.services.aws.AwsSnsService;
+import com.tbemerencio.products.services.aws.dto.MessageDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +15,18 @@ import java.util.Optional;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final AwsSnsService snsService;
 
-    public CategoryService(CategoryRepository categoryRepository){
+
+    public CategoryService(CategoryRepository categoryRepository, AwsSnsService snsService){
         this.categoryRepository = categoryRepository;
+        this.snsService = snsService;
     }
 
     public Category insert(CategoryDTO categoryData){
-        return this.categoryRepository.insert(new Category(categoryData));
+        Category categorySaved = this.categoryRepository.insert(new Category(categoryData));
+        snsService.pubish(new MessageDto(categorySaved.toString()));
+        return categorySaved;
     }
 
     public List<Category> getAll() {
@@ -33,7 +40,9 @@ public class CategoryService {
         if (!categoryData.description().isEmpty()) category.setDescription(categoryData.description());
         if (!categoryData.title().isEmpty()) category.setTitle(categoryData.title());
 
-        return this.categoryRepository.save(category);
+        Category categoryUpdated = this.categoryRepository.save(category);
+        snsService.pubish(new MessageDto(categoryUpdated.toString()));
+        return categoryUpdated;
     }
 
     public void delete(String id) {

@@ -19,6 +19,6 @@ public class AwsSnsService {
     }
 
     public void pubish(MessageDto messageDto){
-        this.snsClient.publish(catalogTopic.getTopicArn(), messageDto.toString());
+        this.snsClient.publish(catalogTopic.getTopicArn(), messageDto.messageDto());
     }
 }
