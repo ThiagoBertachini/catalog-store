@@ -4,6 +4,7 @@ import com.tbemerencio.products.domain.category.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,13 +17,14 @@ public class Product {
     private String description;
     private String ownerId;
     private Integer price;
-    private Category category;
+    private String category;
 
     public Product(ProductDTO productData) {
         title = productData.title();
         description = productData.description();
         ownerId = productData.ownerId();
         price = productData.price();
+        category = productData.categoryId();
     }
 
     public String getTitle() {
@@ -57,11 +59,24 @@ public class Product {
         this.price = price;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", this.id);
+        jsonObject.put("title", this.title);
+        jsonObject.put("description", this.description);
+        jsonObject.put("ownerId", this.ownerId);
+        jsonObject.put("price", this.price);
+        jsonObject.put("category", this.category);
+        jsonObject.put("type", "product");
+        return jsonObject.toString();
     }
 }
