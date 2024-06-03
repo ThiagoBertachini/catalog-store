@@ -13,6 +13,7 @@ Este projeto é uma aplicação Java Spring que oferece funcionalidades para cri
 - **Integração com AWS:**
   - Publicar notificações em um tópico SNS após operações CRUD.
   - Processar mensagens de uma fila SQS.
+  - Salvar S3
 
 ---
 
